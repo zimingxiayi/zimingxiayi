@@ -42,6 +42,20 @@ void remove_data_queue(jet_queue_t *jq)
 	_jet_free(node);
 }
 
+void delete_data_queue(jet_queue_t *jq, jet_int_t pos)
+{
+	jet_int_t index = 0;
+	jet_queue_t *q = 0;
+        for(q = jet_queue_head(jq); q != jet_queue_sentinel(jq); q = jet_queue_next(q))
+        {
+		if(pos == index)
+		{
+                	remove_data_queue(q);
+		}
+		++index;
+        }
+}
+
 void destroy_queue(jet_queue_t *jq)
 {
 	jet_queue_t *q = 0;
@@ -94,7 +108,11 @@ int main(int argc, char* argv[])
 	jet_queue_sort(jq, compore);
 
 	print_queue(jq);
-	
+
+	printf("delete queue:\n");	
+	delete_data_queue(jq, 3);
+	print_queue(jq);
+
 	printf("destroy queue:\n");
 	destroy_queue(jq);
 
