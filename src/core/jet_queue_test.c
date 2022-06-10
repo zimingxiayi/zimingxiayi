@@ -22,38 +22,39 @@ struct jet_data_queue_s {
 #define jet_queue_data_insert(q, n) \
 	(q)->data = n
 
-void insert_head_qeueu(jet_queue_t *queue, jet_data_queue_t *tq, int data)
+void insert_head_qeueu(jet_queue_t *jq, jet_data_queue_t *tq, int data)
 {
         jet_queue_data_insert(tq, data);
-	jet_queue_insert_head(queue, &tq->queue);
+	jet_queue_insert_head(jq, &tq->queue);
 }
 
-void insert_tail_qeueu(jet_queue_t *queue, jet_data_queue_t *tq, int data)
+void insert_tail_qeueu(jet_queue_t *jq, jet_data_queue_t *tq, int data)
 {
 	jet_queue_data_insert(tq, data);
-	jet_queue_insert_tail(queue, &tq->queue);
+	jet_queue_insert_tail(jq, &tq->queue);
 }
 
-void remove_data_queue(jet_queue_t *q)
+void remove_data_queue(jet_queue_t *jq)
 {
-	jet_data_queue_t *node = jet_queue_data(q, jet_data_queue_t, queue);
+	jet_data_queue_t *node = jet_queue_data(jq, jet_data_queue_t, queue);
 	jet_queue_remove(&node->queue);
+	printf("free(%p)\n", node);
 	_jet_free(node);
 }
 
-void destroy_queue(jet_data_queue_t *tq)
+void destroy_queue(jet_queue_t *jq)
 {
 	jet_queue_t *q = 0;
-        for(q = jet_queue_head(&tq->queue); q != jet_queue_sentinel(&tq->queue); q = jet_queue_next(q))
+        for(q = jet_queue_head(jq); q != jet_queue_sentinel(jq); q = jet_queue_next(q))
         {
                 remove_data_queue(q);
         }
 }
 
-void print_queue(jet_queue_t *qq)
+void print_queue(jet_queue_t *jq)
 {
 	jet_queue_t *q = 0;
-	for(q = jet_queue_head(qq); q != jet_queue_sentinel(qq); q = jet_queue_next(q))
+	for(q = jet_queue_head(jq); q != jet_queue_sentinel(jq); q = jet_queue_next(q))
 	{
 		jet_data_queue_t* node = jet_queue_data(q, jet_data_queue_t, queue);
 		printf("%d ", node->data);
@@ -69,36 +70,39 @@ jet_int_t compore(const jet_queue_t *left, const jet_queue_t *right)
 	return lq->data > rq->data;
 }
 
+#define jet_address(addr) printf("%s: %p\n", #addr, addr)
+
 int main(int argc, char* argv[])
 {
 	_jet_srand();
-	jet_queue_t *queue = _jet_malloc(jet_queue_t);
+	jet_queue_t *jq = _jet_malloc(jet_queue_t);
 	jet_data_queue_t* tq = 0;
-	jet_queue_init(queue);
+	jet_queue_init(jq);
 
 	int index = 0;
+	printf("insert queue:\n");
 	for(index = 0; index < MAX_LENGTH; ++index)
 	{
 		tq = _jet_malloc(jet_data_queue_t);
-		insert_head_qeueu(queue, tq, rand() % MAX_LENGTH);
+		jet_address(tq);
+		insert_head_qeueu(jq, tq, rand() % MAX_LENGTH);
 	}
 
-	print_queue(queue);
+	print_queue(jq);
+
+	printf("sort queue:\n");	
+	jet_queue_sort(jq, compore);
+
+	print_queue(jq);
 	
-	jet_queue_sort(queue, compore);
-
-	print_queue(queue);
-
-#if 0	
-	printf("destroy: \n");
-	destroy_queue(tq);
+	printf("destroy queue:\n");
+	destroy_queue(jq);
 
 	jet_queue_t *q = 0;
-	for(q = jet_queue_head(queue); q != jet_queue_sentinel(queue); q = jet_queue_next(q))
+	for(q = jet_queue_head(jq); q != jet_queue_sentinel(jq); q = jet_queue_next(q))
 	{
 		remove_data_queue(q);
 	}
-#endif
-	print_queue(queue);
+	
 	return 0;
 }
