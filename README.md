@@ -1,5 +1,7 @@
 ### Hi there 👋
 
+Linux nginx线程池，链表双向链表队列，位图算法
+
 <!--
 **zimingxiayi/zimingxiayi** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
