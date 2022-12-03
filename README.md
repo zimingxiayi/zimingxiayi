@@ -6,6 +6,8 @@ Linux nginx线程池，链表双向链表队列，位图算法
 2. jet_queue前缀是nginx链表双向共享链表
 3. jet_bit_map位图算法
 
+会持续更新高性能框架和算法等...
+
 <!--
 **zimingxiayi/zimingxiayi** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
