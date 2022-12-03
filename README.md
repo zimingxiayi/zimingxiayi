@@ -1,6 +1,10 @@
 ### Hi there 👋
 
+高性能框架提取
 Linux nginx线程池，链表双向链表队列，位图算法
+1. jet_thread_pool目录下是线程池
+2. jet_queue前缀是nginx链表双向共享链表
+3. jet_bit_map位图算法
 
 <!--
 **zimingxiayi/zimingxiayi** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
